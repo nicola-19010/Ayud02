@@ -19,10 +19,12 @@ public class App {
         List<String> manoJugador = crearMano();
         List<String> manoDealer = crearMano();
 
+        System.out.println("Numero de catas en baraja: " + baraja.size());
         repartir(baraja, manoJugador);
         System.out.println("manoJugador inicial: "+manoJugador); //para visualizar-borrable
         repartir(baraja, manoDealer);
         System.out.println("manoDealer inicial: "+manoDealer); //para visualizar-borrable
+        System.out.println("Numero de catas en baraja: " + baraja.size());
 
         jugar(baraja, manoJugador, manoDealer);
     }
@@ -30,14 +32,34 @@ public class App {
     private static void jugar(List<String> baraja, List<String> manoJugador, List<String> manoDealer) {
         System.out.println("--------------BLACKJACK--------------");
 
-        for (int i = 0; i < manoDealer.size(); i++) { //primera mano del dealer
-            if (i == 0) {
-                System.out.println("[CARTA OCULTA]");
-            } else {
-                String[] carta = manoDealer.get(i).split(" ");
-                System.out.println("[" + carta[1] + " DE " + carta[0] + "]");
+        while (true){
+            mostrarManos(manoJugador, manoDealer);
+            System.out.print("\nEscriba (P) para pedir carta o (B) para bajarse.\n> ");
+            String opcion = leerOpcion();
+            if (opcion.equals("P")) {
+                pedirCarta(baraja, manoJugador);
+            }
+            if (opcion.equals("B")) {
+                bajarse(baraja, manoJugador, manoDealer);
+                break;
             }
         }
+
+    }
+
+    private static void bajarse(List<String> baraja, List<String> manoJugador, List<String> manoDealer) {
+    }
+
+    private static String leerOpcion() {
+        Scanner scanner = new Scanner(System.in);
+        String opcion = scanner.next();
+        return opcion;
+    }
+
+
+    private static void mostrarManos(List<String> manoJugador, List<String> manoDealer) {
+        System.out.println("manoDealer = " + manoDealer); //buscar como ocultar solo una carta del dealer
+        System.out.println("manoJugador = " + manoJugador);
     }
 
     private static void repartir(List<String> baraja, List<String> mano) { //pide la carta inicial para el jugador y el de dealer
