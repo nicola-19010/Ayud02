@@ -19,9 +19,9 @@ public class App {
         List<String> manoJugador = crearMano();
         List<String> manoDealer = crearMano();
 
-        repartir(baraja, manoJugador); //saca 2 cartas y se las da al jugador
+        repartir(baraja, manoJugador);
         System.out.println("manoJugador inicial: "+manoJugador); //para visualizar-borrable
-        repartir(baraja, manoDealer); //
+        repartir(baraja, manoDealer);
         System.out.println("manoDealer inicial: "+manoDealer); //para visualizar-borrable
 
         jugar(baraja, manoJugador, manoDealer);
@@ -29,6 +29,15 @@ public class App {
 
     private static void jugar(List<String> baraja, List<String> manoJugador, List<String> manoDealer) {
         System.out.println("--------------BLACKJACK--------------");
+
+        for (int i = 0; i < manoDealer.size(); i++) { //primera mano del dealer
+            if (i == 0) {
+                System.out.println("[CARTA OCULTA]");
+            } else {
+                String[] carta = manoDealer.get(i).split(" ");
+                System.out.println("[" + carta[1] + " DE " + carta[0] + "]");
+            }
+        }
     }
 
     private static void repartir(List<String> baraja, List<String> mano) { //pide la carta inicial para el jugador y el de dealer
@@ -68,6 +77,24 @@ public class App {
         }
 
         return baraja;
+    }
+
+    public static int obtenerValorDeCarta(String carta){
+        String valor = carta.split(" ")[1];
+
+        return switch (valor) {
+            case "AS" -> 1;
+            case "DOS" -> 2;
+            case "TRES" -> 3;
+            case "CUATRO" -> 4;
+            case "CINCO" -> 5;
+            case "SEIS" -> 6;
+            case "SIETE" -> 7;
+            case "OCHO" -> 8;
+            case "NUEVE" -> 9;
+            case "DIEZ", "JOTA", "QUINA", "KAISER" -> 10;
+            default -> 0;
+        };
     }
 
 
