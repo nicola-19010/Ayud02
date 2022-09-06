@@ -19,14 +19,19 @@ public class App {
         List<String> manoJugador = crearMano();
         List<String> manoDealer = crearMano();
 
-        System.out.println("Numero de catas en baraja: " + baraja.size());
+        mostrarNumeroCartasEnBaraja(baraja);
         repartir(baraja, manoJugador);
         System.out.println("manoJugador inicial: "+manoJugador); //para visualizar-borrable
         repartir(baraja, manoDealer);
         System.out.println("manoDealer inicial: "+manoDealer); //para visualizar-borrable
-        System.out.println("Numero de catas en baraja: " + baraja.size());
+
+        mostrarNumeroCartasEnBaraja(baraja);
 
         jugar(baraja, manoJugador, manoDealer);
+    }
+
+    private static void mostrarNumeroCartasEnBaraja(List<String> baraja) {
+        System.out.println("Numero de cartas en baraja: " + baraja.size());
     }
 
     private static void jugar(List<String> baraja, List<String> manoJugador, List<String> manoDealer) {
@@ -38,6 +43,8 @@ public class App {
             String opcion = leerOpcion();
             if (opcion.equals("P")) {
                 pedirCarta(baraja, manoJugador);
+                System.out.println();
+                mostrarNumeroCartasEnBaraja(baraja); //borrar
             }
             if (opcion.equals("B")) {
                 bajarse(baraja, manoJugador, manoDealer);
@@ -101,6 +108,15 @@ public class App {
         return baraja;
     }
 
+    public static int obtenerValorDeMano(List<String> mano){
+        int valorTotal = 0;
+
+        for (String carta: mano) {
+            valorTotal += obtenerValorDeCarta(carta);
+        }
+
+        return valorTotal;
+    }
     public static int obtenerValorDeCarta(String carta){
         String valor = carta.split(" ")[1];
 
@@ -117,6 +133,8 @@ public class App {
             case "DIEZ", "JOTA", "QUINA", "KAISER" -> 10;
             default -> 0;
         };
+
+
     }
 
 
