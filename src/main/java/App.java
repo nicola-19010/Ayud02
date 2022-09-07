@@ -56,14 +56,43 @@ public class App {
 
     public static void bajarse(List<String> baraja, List<String> manoJugador, List<String> manoDealer) {
         turnoDelDealer(baraja, manoDealer);
+
         mostrarManos(manoDealer, manoJugador);
+
+        List<String> manoGanadora = verificarGanador(manoJugador, manoDealer);
+
+
+
 
 
     }
 
+    private static List<String> verificarGanador(List<String> manoJugador, List<String> manoDealer) {
+        if (esBlackjack(manoJugador) || sePasoDe21(manoDealer)) {
+            return manoJugador;
+        }
+
+        if (esBlackjack(manoDealer) || sePasoDe21(manoJugador)) {
+            return manoDealer;
+        }
+
+        if (calcularSumaDeMano(manoJugador) > calcularSumaDeMano(manoDealer)){
+            return manoJugador;
+        }else {
+            return manoDealer;
+        }
+
+    }
+
+    public static boolean sePasoDe21(List<String> manoJugador) {
+        return false; //temporal borrar
+    }
+
+
+
     public static void turnoDelDealer(List<String> baraja, List<String> manoDealer) { //corregir difnsdflskjfdslkjfdskljdsflkjfdskljfdskljdsfkljdsflkjsd
-        if (!esBlackjack(manoDealer)) {
-            while (calcularSumaDeMano(manoDealer) < 16) {
+        if (!esBlackjack(manoDealer)) { //si la mano del diler no es blackjack
+            while (calcularSumaDeMano(manoDealer) < 16) { //pide una carta mientras la suma de su mano <16
                 pedirCarta(baraja, manoDealer);
             }
         }
