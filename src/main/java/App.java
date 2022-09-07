@@ -61,6 +61,12 @@ public class App {
 
         List<String> manoGanadora = verificarGanador(manoJugador, manoDealer);
 
+        if (manoGanadora.equals(manoJugador)) {
+            System.out.println("*****¡Ganaste!*****");
+        } else {
+            System.out.println("*****¡Perdiste!*****");
+        }
+
 
 
 
@@ -84,8 +90,8 @@ public class App {
 
     }
 
-    public static boolean sePasoDe21(List<String> manoJugador) {
-        return false; //temporal borrar
+    public static boolean sePasoDe21(List<String> mano) {
+        return calcularSumaDeMano(mano)>21;
     }
 
 
@@ -119,11 +125,11 @@ public class App {
         boolean existe10 = false;
 
         for (String carta : mano) {
-            obtenerValorNumericoDeCarta(carta);
+            int valorNumericoDeCarta = obtenerValorNumericoDeCarta(carta);
             if (carta.equals("1")) {
                 existeAs = true;
             }
-            if (carta.equals("1")) {
+            if (carta.equals("10")) {
                 existe10 = true;
             }
         }
