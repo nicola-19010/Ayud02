@@ -7,7 +7,6 @@ public class App {
 
     public static void main(String[] args) {
         iniciar();
-
     }
 
     public static void iniciar() { //crea lo necesario para empezar a jugar
@@ -35,16 +34,17 @@ public class App {
     }
 
     private static void jugar(List<String> baraja, List<String> manoJugador, List<String> manoDealer) {
-        System.out.println("--------------BLACKJACK--------------");
+        System.out.println("--------------PARTIDA DE BLACKJACK--------------");
 
         while (true){
-            mostrarManos(manoJugador, manoDealer);
-            System.out.print("\nEscriba (P) para pedir carta o (B) para bajarse.\n> ");
+            mostrarManos(manoDealer, manoJugador);
+            System.out.print("\nIngrese (P) para pedir una carta o (B) para bajarse.\n> ");
             String opcion = leerOpcion();
             if (opcion.equals("P")) {
                 pedirCarta(baraja, manoJugador);
                 System.out.println();
                 mostrarNumeroCartasEnBaraja(baraja); //borrar
+
             }
             if (opcion.equals("B")) {
                 bajarse(baraja, manoJugador, manoDealer);
@@ -54,27 +54,72 @@ public class App {
 
     }
 
-    private static void bajarse(List<String> baraja, List<String> manoJugador, List<String> manoDealer) {
+    public static void bajarse(List<String> baraja, List<String> manoJugador, List<String> manoDealer) {
+        turnoDelDealer(baraja, manoDealer);
+        mostrarManos(manoDealer, manoJugador);
+
+
     }
 
-    private static String leerOpcion() {
+    public static void turnoDelDealer(List<String> baraja, List<String> manoDealer) { //corregir difnsdflskjfdslkjfdskljdsflkjfdskljfdskljdsfkljdsflkjsd
+        if (!esBlackjack(manoDealer)) {
+            while (calcularSumaDeMano(manoDealer) < 16) {
+                pedirCarta(baraja, manoDealer);
+            }
+        }
+    }
+
+    public static int calcularSumaDeMano(List<String> mano) {
+        int valorTotal = 0;
+
+        for (String carta : mano) {
+            if (carta == null) {
+                break;
+            }
+            valorTotal += obtenerValorNumericoDeCarta(carta);
+        }
+
+        return valorTotal;
+    }
+
+    public static boolean esBlackjack(List<String> mano) {
+        if ((mano.size()) == 0 || mano.size() > 2) { //mano.size = cantidad de cartas en mano
+            return false;
+        }
+        boolean existeAs = false;
+        boolean existe10 = false;
+
+        for (String carta : mano) {
+            obtenerValorNumericoDeCarta(carta);
+            if (carta.equals("1")) {
+                existeAs = true;
+            }
+            if (carta.equals("1")) {
+                existe10 = true;
+            }
+        }
+        return (existeAs && existe10);
+    }
+
+
+    public static String leerOpcion() {
         Scanner scanner = new Scanner(System.in);
         String opcion = scanner.next();
         return opcion;
     }
 
 
-    private static void mostrarManos(List<String> manoJugador, List<String> manoDealer) {
-        System.out.println("manoDealer = " + manoDealer); //buscar como ocultar solo una carta del dealer
+    public static void mostrarManos(List<String> manoDealer, List<String> manoJugador) {
+        System.out.println("manoDealer = " + manoDealer);
         System.out.println("manoJugador = " + manoJugador);
     }
 
-    private static void repartir(List<String> baraja, List<String> mano) { //pide la carta inicial para el jugador y el de dealer
+    public static void repartir(List<String> baraja, List<String> mano) { //pide la carta inicial para el jugador y el de dealer
         pedirCarta(baraja, mano);
         pedirCarta(baraja, mano);
     }
 
-    private static void pedirCarta(List<String> baraja, List<String> mano) {
+    public static void pedirCarta(List<String> baraja, List<String> mano) {
         String carta;
         //buscar como obtener el primer elemento arraylist
         carta = baraja.get(0);
@@ -83,7 +128,7 @@ public class App {
         baraja.remove(carta);
     }
 
-    private static List<String> crearMano() {
+    public static List<String> crearMano() {
         List<String> mano = new ArrayList<>();
         return mano;
     }
@@ -112,12 +157,12 @@ public class App {
         int valorTotal = 0;
 
         for (String carta: mano) {
-            valorTotal += obtenerValorDeCarta(carta);
+            valorTotal += obtenerValorNumericoDeCarta(carta);
         }
 
         return valorTotal;
     }
-    public static int obtenerValorDeCarta(String carta){
+    public static int obtenerValorNumericoDeCarta(String carta){
         String valor = carta.split(" ")[1];
 
         return switch (valor) {
